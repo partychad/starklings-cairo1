@@ -1,3 +1,4 @@
+use core::dict::Felt252DictTrait;
 // dict3.cairo
 // Custom data structure using dicts
 // Using Felt252Dict in structs allow us to simulate mutable data structures
@@ -8,7 +9,6 @@
 // Execute `starklings hint dict3` or use the `hint` watch subcommand for a hint.
 
 
-// I AM NOT DONE
 
 
 #[derive(Destruct)]
@@ -21,21 +21,27 @@ struct Team {
 impl TeamImpl of TeamTrait {
     fn new() -> Team {
         //TODO : initialize empty team with 0 player
+        Team { level : Default::default(), players_count : 0}
     }
 
     fn get_level(ref self: Team, name: felt252) -> usize {
         //TODO 
+        self.level.get(name)
     }
 
     fn add_player(ref self: Team, name: felt252, level: usize) -> () {
         //TODO
+        self.level.insert(name, level);
+        self.players_count += 1;
     }
 
     fn level_up(ref self: Team, name: felt252) {
-        //TODO
+        self.level.insert(name, self.level.get(name) + 1 );
+
     }
 
     fn players_count(self: @Team) -> usize {
+        *self.players_count
         //TODO
     }
 }
